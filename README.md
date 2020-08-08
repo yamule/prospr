@@ -61,7 +61,7 @@ For consistency in visualization across predictions made for different bin range
 
 # Prospr using pre-computed input files.
 
-'''
+```
 python run.py run -h
 usage:  run [-h] [-n NETWORK] [-s STRIDE] [-f FASTA] [-p PSSM] [-m MAT]
             [-b HHM] [-t TMPPKL] [-o OUTFILE] [-g GPU]
@@ -85,10 +85,12 @@ optional arguments:
   -o OUTFILE, --outfile OUTFILE
                         result file
   -g GPU, --gpu GPU     gpu device name
-'''
+```
 
 example command: 
 
-''' 
-python run.py run -n nn\\ProSPr_full_converted.nn -p example_files\2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files\2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files\2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files\2E74_D.pdb_d0.fas.jackali.max.tmp.fas
-'''
+``` 
+python run.py run -n nn\ProSPr_full_converted.nn -p example_files\2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files\2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files\2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files\2E74_D.pdb_d0.fas.jackali.max.tmp.fas
+```
+
+ProSPr_full_converted.nn is the file which is converted by the lines in run.py for pytorch version compatibility.
