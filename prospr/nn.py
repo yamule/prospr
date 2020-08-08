@@ -111,7 +111,11 @@ class ResNet(nn.Module):
                     nn.init.constant_(m.bn3.weight, 0)
                 elif isinstance(m, BasicBlock):
                     nn.init.constant_(m.bn2.weight, 0)
-
+        self.device_name='cpu'
+        
+    def set_device_name(self,n):
+        self.device_name = n;
+        
     def _make_layer(self, block, planes, blocks, stride=1, norm_layer=None):
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
@@ -136,7 +140,7 @@ class ResNet(nn.Module):
 
     def forward(self, x):
         #fix input dimensions
-        x = self.bn1(x)    #Why?
+        x = self.bn1(x.to(self.device_name))    #Why?
         x = self.conv1(x)
   
         #propagate through RESNET blocks

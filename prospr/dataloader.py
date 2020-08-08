@@ -16,8 +16,10 @@ def seq2mat(s):
 
 
 def pickled(name = None, i = None, j = None):
-    
-    pklfilename = basedir +name+ "/" + name +'.pkl' 
+    if ".pkl" in name:
+        pklfilename = name
+    else:
+        pklfilename = basedir +name+ "/" + name +'.pkl' 
     data = load(pklfilename)
     seq = data['seq']
     len_seq = len(seq)
@@ -28,6 +30,7 @@ def pickled(name = None, i = None, j = None):
     potts_h = data['h']
     potts_score = data['score']
     potts_fn = data['frobenius_norm']
+    
                                                               
     seq_mat = seq2mat(seq) #There is a numpy function to do this
     

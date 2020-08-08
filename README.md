@@ -58,3 +58,37 @@ PDB structure labels: https://predictioncenter.org/casp13/domains_summary.cgi
 
 For consistency in visualization across predictions made for different bin ranges, all distances (including labels) were rebinned into the 10 bin format defined for CASP14 distance predictions, found here https://predictioncenter.org/casp14/index.cgi?page=format#RR 
 
+
+# Prospr using pre-computed input files.
+
+'''
+python run.py run -h
+usage:  run [-h] [-n NETWORK] [-s STRIDE] [-f FASTA] [-p PSSM] [-m MAT]
+            [-b HHM] [-t TMPPKL] [-o OUTFILE] [-g GPU]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -n NETWORK, --network NETWORK
+                        Currently, only ProSPr_full.nn is acceptable.
+  -s STRIDE, --stride STRIDE
+                        stride over which crops of domain are predicted and
+                        averaged, integer 1-30. WARNING: Using a small stride
+                        may result in very long processing time! Suggested for
+                        quick prediction: 25
+  -f FASTA, --fasta FASTA
+                        Plain FASTA file.
+  -p PSSM, --pssm PSSM  Ascii pssm file created by psi-blast
+  -m MAT, --mat MAT     Customized plmDCA.jl result.
+  -b HHM, --hhm HHM     .hhm file by hhblits.
+  -t TMPPKL, --tmppkl TMPPKL
+                        (output) intermediate pkl file.
+  -o OUTFILE, --outfile OUTFILE
+                        result file
+  -g GPU, --gpu GPU     gpu device name
+'''
+
+example command: 
+
+''' 
+python run.py run -n nn\\ProSPr_full_converted.nn -p example_files\2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files\2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files\2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files\2E74_D.pdb_d0.fas.jackali.max.tmp.fas
+'''
