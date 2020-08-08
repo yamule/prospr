@@ -78,7 +78,7 @@ optional arguments:
   -f FASTA, --fasta FASTA
                         Plain FASTA file.
   -p PSSM, --pssm PSSM  Ascii pssm file created by psi-blast
-  -m MAT, --mat MAT     Customized plmDCA.jl result.
+  -m MAT, --mat MAT     Customized plmDCA.jl result. (I think the archtecture must be the same with the original Prospr input. Please check example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat .)
   -b HHM, --hhm HHM     .hhm file by hhblits.
   -t TMPPKL, --tmppkl TMPPKL
                         (output) intermediate pkl file.
@@ -90,7 +90,7 @@ optional arguments:
 example command: 
 
 ``` 
-python run.py run -n nn\ProSPr_full_converted.nn -p example_files\2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files\2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files\2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files\2E74_D.pdb_d0.fas.jackali.max.tmp.fas
+python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
 ```
 
 ProSPr_full_converted.nn is the file which is converted by the lines in run.py for pytorch version compatibility.
