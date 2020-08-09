@@ -23,13 +23,13 @@ from prospr.hhblits import *
 # In[2]:
 
 
-#If there are incompatibility in pytorch versions, following process might help.
-#model = torch.load("nn\\ProSPr_full.nn")
-#torch.save(model.state_dict(), "nn\\ProSPr_full_new.pth")
+#If there are incompatibilities in pytorch versions, following process might help.
+#model = torch.load("nn/ProSPr_full.nn")
+#torch.save(model.state_dict(), "nn/ProSPr_full_new.pth")
 #model = prospr();
-#model.load_state_dict(torch.load("nn\\ProSPr_full_new.pth"));
+#model.load_state_dict(torch.load("nn/ProSPr_full_new.pth"));
 #model.eval();
-#torch.save(model,"nn\\ProSPr_full_converted.nn");
+#torch.save(model,"nn/ProSPr_full_converted.nn");
 
 
 # In[ ]:
@@ -152,14 +152,14 @@ if __name__ == "__main__":
     subparsers = parser.add_subparsers(help="""Please check:
      run -h """, dest='command')
     run_parser = subparsers.add_parser('run')
-    run_parser.add_argument('-n','--network', help='.nn file provided by dellacortelab.', default='full')
+    run_parser.add_argument('-n','--network', help='.nn file provided by dellacortelab.', default='full', required =True)
     run_parser.add_argument('-s','--stride', help='stride over which crops of domain are predicted and averaged, integer 1-30.\nWARNING: Using a small stride may result in very long processing time! Suggested for quick prediction: 25', type=int, default=25)
-    run_parser.add_argument('-f','--fasta', help='Plain FASTA file.', default='')
-    run_parser.add_argument('-p','--pssm', help='Ascii pssm file created by psi-blast', default='')
-    run_parser.add_argument('-m','--mat', help='Customized plmDCA.jl result.', default='')
-    run_parser.add_argument('-b','--hhm', help='.hhm file by hhblits.')
+    run_parser.add_argument('-f','--fasta', help='Plain FASTA file.', default='', required =True)
+    run_parser.add_argument('-p','--pssm', help='Ascii pssm file created by psi-blast', default='', required =True)
+    run_parser.add_argument('-m','--mat', help='Customized plmDCA.jl result. (I think the archtecture must be the same with the original Prospr input. Please check example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat .)', default='', required =True)
+    run_parser.add_argument('-b','--hhm', help='.hhm file by hhblits.', required =True)
     run_parser.add_argument('-t','--tmppkl', help='(output) intermediate pkl file.', default="tmp."+str(os.getpid())+".pkl")
-    run_parser.add_argument('-o','--outfile', help='result file',  default="tmp."+str(os.getpid())+".res")
+    run_parser.add_argument('-o','--outfile', help='result file',  default="tmp."+str(os.getpid())+".res", required =True)
     run_parser.add_argument('-g','--gpu', help='gpu device name',  default="")
     
     args = parser.parse_args()
@@ -167,27 +167,4 @@ if __name__ == "__main__":
         main(args)
     else:
         raise Exception();
-
-# In[1]:
-
-
-
-
-
-# In[3]:
-
-
-
-
-
-# In[5]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
