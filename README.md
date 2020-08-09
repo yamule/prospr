@@ -100,9 +100,9 @@ ProSPr_full_converted.nn is the file which is converted by the lines in run.py f
 
 ## Result files:
 
- - OUTFILE+".dist.res": result of distance prediction
+ - OUTFILE+".dist.res": the result of distance prediction
    - r1, r2 : indices of interacting residues.
-   - dist : the distance calculated with the argmax result of predicted scores in 1-63.
+   - dist : the distance calculated with the argmax result of predicted scores in index 1-63 of the array (raw result).
    - score : the score for the distance produced by the network which are normalized using scores in 1-63.
    
  - OUTFILE+".distbin.res": distgram
