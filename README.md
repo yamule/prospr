@@ -100,16 +100,18 @@ ProSPr_full_converted.nn is the file which is converted by the lines in run.py f
 
 ## Result files:
 
- - OUTFILE+".dist.res": result of distance prediction 
+ - OUTFILE+".dist.res": result of distance prediction
    - r1, r2 : indices of interacting residues.
-   - dist : the distance calculated with the argmax result of binned distance prediction in 1-63.
-   - score : the score produced by the network which were normalized using scores in 1-63.
+   - dist : the distance calculated with the argmax result of predicted scores in 1-63.
+   - score : the score for the distance produced by the network which are normalized using scores in 1-63.
    
  - OUTFILE+".distbin.res": distgram
    - r1, r2 : indices of interacting residues.
-   - values : the scores in 1-63 produced by the network which were normalized using scores in 1-63.
+   - values : the scores in 1-63 produced by the network which are normalized using scores in 1-63.
  
  - OUTFILE+".phi_psi.res": phi psi angles
    - res_num : indices of the residues.
-   - values : the scores in 1-36 produced by the network which were normalized using scores in 1-36.
+   - values : the scores in 1-36 produced by the network which are normalized using scores in 1-36.
    - category : phi or psi.
+   
+ - tmp.<process_id>.pkl: intermediate pkl file
