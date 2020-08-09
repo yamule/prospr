@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 import argparse
@@ -43,7 +43,7 @@ Customized version of prospr https://github.com/dellacortelab/prospr
 LGPL License
 '''
 diststart = 2.0;
-diststep = 20.0/62.0;
+diststep = 20.0/63.0;
 def prob_to_dist(prospr_res):
     global diststep;
     global diststart;
@@ -57,7 +57,7 @@ def prob_to_dist(prospr_res):
             if psum <= 0.0:
                 continue;
             amax = np.argmax(pp,axis=0);
-            ret[ii,jj] = amax*diststep+diststart+diststep/2.0;
+            ret[ii,jj] = (amax+1)*diststep+diststart+diststep/2.0;
             prob[ii,jj] = pp[amax]/psum;
             ret[jj,ii] = ret[ii,jj];
             prob[jj,ii] = prob[ii,jj]; 

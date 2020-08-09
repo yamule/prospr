@@ -96,3 +96,20 @@ python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74_D.pdb_d0.
 ```
 
 ProSPr_full_converted.nn is the file which is converted by the lines in run.py for pytorch version compatibility.
+
+
+## Result files:
+
+ - OUTFILE+".dist.res": result of distance prediction 
+   - r1, r2 : indices of interacting residues.
+   - dist : the distance calculated with the argmax result of binned distance prediction in 1-63.
+   - score : the score produced by the network which were normalized using scores in 1-63.
+   
+ - OUTFILE+".distbin.res": distgram
+   - r1, r2 : indices of interacting residues.
+   - values : the scores in 1-63 produced by the network which were normalized using scores in 1-63.
+ 
+ - OUTFILE+".phi_psi.res": phi psi angles
+   - res_num : indices of the residues.
+   - values : the scores in 1-36 produced by the network which were normalized using scores in 1-36.
+   - category : phi or psi.
