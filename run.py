@@ -156,9 +156,9 @@ if __name__ == "__main__":
     run_parser.add_argument('-s','--stride', help='stride over which crops of domain are predicted and averaged, integer 1-30.\nWARNING: Using a small stride may result in very long processing time! Suggested for quick prediction: 25', type=int, default=25)
     run_parser.add_argument('-f','--fasta', help='Plain FASTA file.', default='', required =True)
     run_parser.add_argument('-p','--pssm', help='Ascii pssm file created by psi-blast', default='', required =True)
-    run_parser.add_argument('-m','--mat', help='Customized plmDCA.jl result. (I think the archtecture must be the same with the original Prospr input. Please check example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat .)', default='', required =True)
+    run_parser.add_argument('-m','--mat', help='Customized plmDCA.jl result. (I think the archtecture must be the same with the original Prospr input. Please check example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat (hdf5 format).)', default='', required =True)
     run_parser.add_argument('-b','--hhm', help='.hhm file by hhblits.', required =True)
-    run_parser.add_argument('-t','--tmppkl', help='(output) intermediate pkl file.', default="tmp."+str(os.getpid())+".pkl")
+    run_parser.add_argument('-t','--tmppkl', help='(output) intermediate pkl file. (the extension should be .pkl)', default="tmp."+str(os.getpid())+".pkl")
     run_parser.add_argument('-o','--outfile', help='result file',  default="tmp."+str(os.getpid())+".res", required =True)
     run_parser.add_argument('-g','--gpu', help='gpu device name',  default="")
     

@@ -62,8 +62,8 @@ For consistency in visualization across predictions made for different bin range
 # ProSPr using pre-computed input files.
 
 ```
-usage:  run [-h] -n NETWORK [-s STRIDE] -f FASTA -p PSSM -m MAT -b HHM
-            [-t TMPPKL] -o OUTFILE [-g GPU]
+usage: python run.py run [-h] -n NETWORK [-s STRIDE] -f FASTA -p PSSM -m MAT -b HHM
+             [-t TMPPKL] -o OUTFILE [-g GPU]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -80,33 +80,34 @@ optional arguments:
   -m MAT, --mat MAT     Customized plmDCA.jl result. (I think the archtecture
                         must be the same with the original Prospr input.
                         Please check example_files/2E74_D.pdb_d0.fas.jackali.m
-                        ax.dcares.dat.mat .)
+                        ax.dcares.dat.mat (hdf5 format).)
   -b HHM, --hhm HHM     .hhm file by hhblits.
   -t TMPPKL, --tmppkl TMPPKL
-                        (output) intermediate pkl file.
+                        (output) intermediate pkl file. (the extension should
+                        be .pkl)
   -o OUTFILE, --outfile OUTFILE
                         result file
   -g GPU, --gpu GPU     gpu device name
 ```
 
-example command: 
+Example command: 
 
 ``` 
 python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
 ```
 
-ProSPr_full_converted.nn is the file which is converted by the lines in run.py for pytorch version compatibility.
+ProSPr_full_converted.nn is the file which is converted by the lines (they are commented out now) in run.py for pytorch version compatibility.
 
 
 ## Result files:
 
  - OUTFILE+".dist.res": the result of distance prediction
-   - r1, r2 : indices of interacting residues.
+   - r1, r2 : indices of the interacting residues.
    - dist : the distance calculated with the argmax result of predicted scores in index 1-63 of the array (raw result).
    - score : the score for the distance produced by the network which are normalized using scores in 1-63.
    
  - OUTFILE+".distbin.res": distgram
-   - r1, r2 : indices of interacting residues.
+   - r1, r2 : indices of the interacting residues.
    - values : the scores in 1-63 produced by the network which are normalized using scores in 1-63.
  
  - OUTFILE+".phi_psi.res": phi psi angles
@@ -114,4 +115,4 @@ ProSPr_full_converted.nn is the file which is converted by the lines in run.py f
    - values : the scores in 1-36 produced by the network which are normalized using scores in 1-36.
    - category : phi or psi.
    
- - tmp.<process_id>.pkl: intermediate pkl file
+ - tmp.<process_id>.pkl (or the file you set with the option "-t"): intermediate pkl file
