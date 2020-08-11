@@ -34,6 +34,8 @@ class Sequence(object):
         
     @staticmethod
     def build_with_files(seq_file,pssm_file,hhm_file,mat_file,out_file):
+        #inspired by the work by Ag_smith https://qiita.com/Ag_smith/items/849abf7ed95e0d57d1b0
+        
         s = Sequence("dummy")
         
         filename = pssm_file 
