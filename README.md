@@ -103,7 +103,7 @@ ProSPr_full_converted.nn is the file which is converted by the lines (they are c
 
  - OUTFILE+".dist.res": the result of distance prediction
    - r1, r2 : indices of the interacting residues.
-   - dist : the distance calculated with the argmax result of predicted scores in index 1-63 of the array (raw result).
+   - dist : the distance calculated with the argmax result of predicted scores in index 1-63 of the array (of the raw result) which are normalized using scores in 1-63.
    - score : the score for the distance produced by the network which are normalized using scores in 1-63.
    
  - OUTFILE+".distbin.res": distgram
