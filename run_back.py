@@ -92,58 +92,54 @@ def main(args):
     if len(args.gpu) > 0:
         network.to(args.gpu);
         network.set_device_name(args.gpu)
-    if not args.raw  in ["True","1","False","0"]:
-        raise Exception("-r must have True, 1, False, or 0.");
+    
     (dist_prob, phi_prob, psi_prob) = pred_with_files(args.fasta,args.pssm,args.hhm,args.mat,args.tmppkl, network, args.stride)
-    if args.raw == "True" or args.raw == "1":
-        save(dist_prob, args.outfile);
-    else:
-        slen = dist_prob.shape[1];
-        dist_res = prob_to_dist(dist_prob);
-        phi_res = prob_to_angle(phi_prob);
-        psi_res = prob_to_angle(psi_prob);
-
-        distfile = args.outfile+".dist.res";
-        distbinfile = args.outfile+".distbin.res";
-        anglefile = args.outfile+".phi_psi.res";
-        with open(distfile,"w",newline="\n") as fout:
-            for ii in range(slen):
-                for jj in range(slen):
-                    if(ii >= jj):
-                        continue;
-                    fout.write("r1:\t"+str(ii)+"\tr2:\t"+str(jj)
-                               +"\tdist:\t"+str(dist_res[0][ii,jj])+"\tscore:\t"+str(dist_res[1][ii,jj])+"\n");
-        with open(distbinfile,"w",newline="\n") as fout:
-            sshape = dist_prob.shape;
-            for ii in range(sshape[1]):
-                for jj in range(sshape[2]):
-                    if ii < jj:
-                        pp = dist_prob[1:,ii,jj]*dist_prob[1:,jj,ii]
-                        psum = np.sum(pp);
-                        if psum > 0.0:
-                            pp = pp/psum;
-                        fout.write("r1:\t{}\tr2:\t{}\tvalues:\t".format(ii,jj));
-                        for q in range(pp.shape[0]):
-                            if q > 0:
-                                fout.write(",");
-                            fout.write(str(pp[q]));
-                        fout.write("\n");
-
-        with open(anglefile,"w",newline="\n") as fout:
-            for ii in range(slen):
-                '''
-                fout.write("res_num:\t"+str(ii)+"\tphi:\t"+str(phi_res[0][ii])+"\tphi_prob\t"+str(phi_res[1][ii])
-                          +"\tpsi:\t"+str(psi_res[0][ii])+"\tpsi_prob\t"+str(psi_res[1][ii])+"\n");
-                '''
-                fout.write("res_num:\t"+str(ii)+"\tcategory:\tphi\t");
-                fout.write("values:\t"+",".join( [str(ss) for ss in list(phi_prob[1:,ii])]));
-                fout.write("\n");
-
-                fout.write("res_num:\t"+str(ii)+"\tcategory:\tpsi\t");
-                fout.write("values:\t"+",".join( [str(ss) for ss in list(psi_prob[1:,ii])]));
-                fout.write("\n");
-
-
+    slen = dist_prob.shape[1];
+    dist_res = prob_to_dist(dist_prob);
+    phi_res = prob_to_angle(phi_prob);
+    psi_res = prob_to_angle(psi_prob);
+    
+    distfile = args.outfile+".dist.res";
+    distbinfile = args.outfile+".distbin.res";
+    anglefile = args.outfile+".phi_psi.res";
+    with open(distfile,"w",newline="\n") as fout:
+        for ii in range(slen):
+            for jj in range(slen):
+                if(ii >= jj):
+                    continue;
+                fout.write("r1:\t"+str(ii)+"\tr2:\t"+str(jj)
+                           +"\tdist:\t"+str(dist_res[0][ii,jj])+"\tscore:\t"+str(dist_res[1][ii,jj])+"\n");
+    with open(distbinfile,"w",newline="\n") as fout:
+        sshape = dist_prob.shape;
+        for ii in range(sshape[1]):
+            for jj in range(sshape[2]):
+                if ii < jj:
+                    pp = dist_prob[1:,ii,jj]*dist_prob[1:,jj,ii]
+                    psum = np.sum(pp);
+                    if psum > 0.0:
+                        pp = pp/psum;
+                    fout.write("r1:\t{}\tr2:\t{}\tvalues:\t".format(ii,jj));
+                    for q in range(pp.shape[0]):
+                        if q > 0:
+                            fout.write(",");
+                        fout.write(str(pp[q]));
+                    fout.write("\n");
+    
+    with open(anglefile,"w",newline="\n") as fout:
+        for ii in range(slen):
+            '''
+            fout.write("res_num:\t"+str(ii)+"\tphi:\t"+str(phi_res[0][ii])+"\tphi_prob\t"+str(phi_res[1][ii])
+                      +"\tpsi:\t"+str(psi_res[0][ii])+"\tpsi_prob\t"+str(psi_res[1][ii])+"\n");
+            '''
+            fout.write("res_num:\t"+str(ii)+"\tcategory:\tphi\t");
+            fout.write("values:\t"+",".join( [str(ss) for ss in list(phi_prob[1:,ii])]));
+            fout.write("\n");
+            
+            fout.write("res_num:\t"+str(ii)+"\tcategory:\tpsi\t");
+            fout.write("values:\t"+",".join( [str(ss) for ss in list(psi_prob[1:,ii])]));
+            fout.write("\n");
+            
+            
             
     save_path = args.outfile
         
@@ -165,7 +161,6 @@ if __name__ == "__main__":
     run_parser.add_argument('-t','--tmppkl', help='(output) intermediate pkl file. (the extension should be .pkl)', default="tmp."+str(os.getpid())+".pkl")
     run_parser.add_argument('-o','--outfile', help='result file',  default="tmp."+str(os.getpid())+".res", required =True)
     run_parser.add_argument('-g','--gpu', help='gpu device name',  default="")
-    run_parser.add_argument('-r','--raw', help='output original prospr .pkl result',  default="False")
     
     args = parser.parse_args()
     if args.command == 'run':

@@ -1,0 +1,9 @@
+# with Julia's pkg mode, install dependencies.
+
+add https://github.com/pagnani/PottsGauge 
+add https://github.com/carlobaldassi/GaussDCA.jl.git  
+add https://github.com/pagnani/PlmDCA 
+add MAT 
+
+# Run run_plmDCA.jl <input file path> <output file path>
+julia .\run_plmDCA.jl .\T1065s1.msa T1065s1.res 

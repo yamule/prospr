@@ -61,6 +61,10 @@ For consistency in visualization across predictions made for different bin range
 
 # ProSPr using pre-computed input files.
 
+
+Please see potts_plmDCA.jl/howto.txt if you don't have Matlab license.
+
+
 ```
 usage: python run.py run [-h] -n NETWORK [-s STRIDE] -f FASTA -p PSSM -m MAT -b HHM
              [-t TMPPKL] -o OUTFILE [-g GPU]
@@ -88,6 +92,7 @@ optional arguments:
   -o OUTFILE, --outfile OUTFILE
                         result file
   -g GPU, --gpu GPU     gpu device name
+  -r RAW, --raw RAW     output original prospr .pkl result
 ```
 
 Example command: 
