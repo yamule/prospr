@@ -62,7 +62,7 @@ For consistency in visualization across predictions made for different bin range
 # ProSPr using pre-computed input files.
 
 
-Please see potts_plmDCA.jl/howto.txt if you don't have Matlab license.
+Please see potts_plmDCA.jl/howto.txt if you don't have Matlab license. (Run ProSPr with https://github.com/pagnani/PlmDCA)
 
 
 ```
