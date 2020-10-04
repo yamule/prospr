@@ -62,12 +62,12 @@ For consistency in visualization across predictions made for different bin range
 # ProSPr using pre-computed input files.
 
 
-Please see potts_plmDCA.jl/howto.txt if you don't have Matlab license. (Run ProSPr with https://github.com/pagnani/PlmDCA)
+Please see potts_PlmDCA.jl/howto.txt if you don't have Matlab license. (Run ProSPr with https://github.com/pagnani/PlmDCA)
 
 
 ```
-usage: python run.py run [-h] -n NETWORK [-s STRIDE] -f FASTA -p PSSM -m MAT -b HHM
-             [-t TMPPKL] -o OUTFILE [-g GPU]
+usage:  run [-h] -n NETWORK [-s STRIDE] -f FASTA -p PSSM -m MAT -b HHM
+            [-t TMPPKL] -o OUTFILE [-g GPU] [-r]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -81,7 +81,7 @@ optional arguments:
   -f FASTA, --fasta FASTA
                         Plain FASTA file.
   -p PSSM, --pssm PSSM  Ascii pssm file created by psi-blast
-  -m MAT, --mat MAT     Customized plmDCA.jl result. (I think the archtecture
+  -m MAT, --mat MAT     Customized PlmDCA.jl result. (I think the archtecture
                         must be the same with the original Prospr input.
                         Please check example_files/2E74_D.pdb_d0.fas.jackali.m
                         ax.dcares.dat.mat (hdf5 format).)
@@ -92,13 +92,13 @@ optional arguments:
   -o OUTFILE, --outfile OUTFILE
                         result file
   -g GPU, --gpu GPU     gpu device name
-  -r RAW, --raw RAW     output original prospr .pkl result
+  -r, --raw             output original prospr .pkl result
 ```
 
 Example command: 
 
 ``` 
-python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
+python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
 ```
 
 ProSPr_full_converted.nn is the file which is converted by the lines (they are commented out now) in run.py for pytorch version compatibility.

@@ -92,10 +92,9 @@ def main(args):
     if len(args.gpu) > 0:
         network.to(args.gpu);
         network.set_device_name(args.gpu)
-    if not args.raw  in ["True","1","False","0"]:
-        raise Exception("-r must have True, 1, False, or 0.");
     (dist_prob, phi_prob, psi_prob) = pred_with_files(args.fasta,args.pssm,args.hhm,args.mat,args.tmppkl, network, args.stride)
-    if args.raw == "True" or args.raw == "1":
+    
+    if args.raw:
         save(dist_prob, args.outfile);
     else:
         slen = dist_prob.shape[1];
@@ -160,12 +159,12 @@ if __name__ == "__main__":
     run_parser.add_argument('-s','--stride', help='stride over which crops of domain are predicted and averaged, integer 1-30.\nWARNING: Using a small stride may result in very long processing time! Suggested for quick prediction: 25', type=int, default=25)
     run_parser.add_argument('-f','--fasta', help='Plain FASTA file.', default='', required =True)
     run_parser.add_argument('-p','--pssm', help='Ascii pssm file created by psi-blast', default='', required =True)
-    run_parser.add_argument('-m','--mat', help='Customized plmDCA.jl result. (I think the archtecture must be the same with the original Prospr input. Please check example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat (hdf5 format).)', default='', required =True)
+    run_parser.add_argument('-m','--mat', help='Customized PlmDCA.jl result. (I think the archtecture must be the same with the original Prospr input. Please check example_files/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat (hdf5 format).)', default='', required =True)
     run_parser.add_argument('-b','--hhm', help='.hhm file by hhblits.', required =True)
     run_parser.add_argument('-t','--tmppkl', help='(output) intermediate pkl file. (the extension should be .pkl)', default="tmp."+str(os.getpid())+".pkl")
     run_parser.add_argument('-o','--outfile', help='result file',  default="tmp."+str(os.getpid())+".res", required =True)
     run_parser.add_argument('-g','--gpu', help='gpu device name',  default="")
-    run_parser.add_argument('-r','--raw', help='output original prospr .pkl result',  default="False")
+    run_parser.add_argument('-r','--raw',action="store_true", help='output original prospr .pkl result')
     
     args = parser.parse_args()
     if args.command == 'run':
