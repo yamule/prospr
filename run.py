@@ -75,17 +75,6 @@ def prob_to_angle(prospr_res):
         prob[ii] = prospr_res[amax+1,ii];
     return (ret,prob);
 
-def prob_to_angle(prospr_res):
-    sshape = prospr_res.shape;
-    ret = np.zeros(shape=(sshape[1]));
-    prob = np.zeros(shape=(sshape[1]));
-    vstep = 360.0/36;
-    for ii in range(sshape[1]):
-        amax = np.argmax(prospr_res[1:,ii],axis=0);
-        ret[ii] = amax*vstep-180.0;
-        prob[ii] = prospr_res[amax+1,ii];
-    return (ret,prob);
-
 
 def main(args):
     network = load_model(args.network)
