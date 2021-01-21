@@ -98,7 +98,9 @@ optional arguments:
 Example command: 
 
 ``` 
-python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
+python run.py run -n nn/ProSPr_full.nn -p example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
+#or
+#python run.py run -n nn/ProSPr_full_converted.nn -p example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.ascii  -b example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.hhm -m example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.dcares.dat.mat -g "cuda:0" -o testout.dat -f example_files/2E74/2E74_D.pdb_d0.fas.jackali.max.tmp.fas
 ```
 
 ProSPr_full_converted.nn is the file which is converted by the lines (they are commented out now) in run.py for pytorch version compatibility.
