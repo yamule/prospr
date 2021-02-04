@@ -105,9 +105,8 @@ python run.py run -n nn/ProSPr_full.nn -p example_files/2E74/2E74_D.pdb_d0.fas.j
 
 ProSPr_full_converted.nn is the file which is converted by the lines (they are commented out now) in run.py for pytorch version compatibility.
 
-
-## Result files:
-
+## Customized Output Files (The scores in index 0 are ignored.):
+Original ProSPr output can be obtained with --raw option.  
  - OUTFILE+".dist.res": the result of distance prediction
    - r1, r2 : indices of the interacting residues.
    - dist : the distance calculated with the argmax result of predicted scores in index 1-63 of the array (of the raw result) which are normalized using scores in 1-63.
