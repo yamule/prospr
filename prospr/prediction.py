@@ -5,7 +5,12 @@ import random
 from prospr.dataloader import dataloader
 from prospr.nn import CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
 
+
 IDEAL_BATCH_SIZE = 2 
+
+#For low memory GPU
+#IDEAL_BATCH_SIZE = 1 
+
 
 def norm(thing):
     mean = np.mean(thing)

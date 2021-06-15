@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[28]:
+# In[40]:
 
 
 import pickle;
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt;
 import numpy as np;
 
 
-# In[29]:
+# In[41]:
 
 
 # Ran
@@ -18,7 +18,7 @@ import numpy as np;
 pp = pickle.load(open("testout.pkl","rb"));
 
 
-# In[30]:
+# In[42]:
 
 
 #print(pp.keys())
@@ -26,7 +26,7 @@ pp = pickle.load(open("testout.pkl","rb"));
 #print(pp["dist_bin_map"]);
 
 
-# In[31]:
+# In[43]:
 
 
 import numpy as np
@@ -331,7 +331,7 @@ class PDBAtom:
 
 
 
-# In[32]:
+# In[44]:
 
 
 cbs = PDBData.load("6tmm_downloaded/6tmm-pdb-bundle1.pdb").get_cb_atoms()[0];
@@ -361,11 +361,29 @@ plt.xlabel('Residue i')
 plt.ylabel('Residue j')
 
 
-# In[33]:
+# In[45]:
 
 
 #plt.imshow(np.sum(pp["dist"][0:3,:,:],axis=0) >= 0.5);
 plt.imshow(np.argmax(pp["dist"][:,:,:],axis=0) < 3);
 plt.xlabel('Residue i')
 plt.ylabel('Residue j')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 

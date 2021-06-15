@@ -150,7 +150,7 @@ class Sequence(object):
                 line_counter += 1
         self.hhm = pssm
 
-    def fast_dca(self):   
+    def fast_dca(self):
         ns           = 21  
         wmin         = 0.8 
         a3m = parse_a3m(self.a3m_file) 
@@ -164,3 +164,11 @@ class Sequence(object):
         dimensions = f2d_dca.shape
         f2d_dca = f2d_dca.reshape(dimensions[1],dimensions[2],dimensions[3])
         self.dca = f2d_dca.astype('float16')
+        
+        '''
+        # For low memory gpu
+        from numba import cuda
+        cuda.select_device(0) # possibly different
+        cuda.close()
+        '''
+        
