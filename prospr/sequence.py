@@ -86,16 +86,16 @@ class Sequence(object):
     def __init__(self, a3m_file, **kwargs):
         self.a3m_file = a3m_file
         self.name = a3m_file.split('.a3m')[0]
-        self.hhm_donotremove = False;
         if "hhm" in kwargs:
-            self.hhm_donotremove = True;
             self.hhm_precomputed = kwargs["hhm"];
+        else:
+            self.hhm_precomputed = "";
 
     def build(self):
         self.get_seq()
         self.make_hhm()
         self.fast_dca()
-        if not self.hhm_donotremove:
+        if len(self.hhm_precomputed) == 0:
             os.system('rm '+self.hhm_file)
     
     def get_seq(self):
@@ -117,7 +117,7 @@ class Sequence(object):
 
     def make_hhm(self):
         #create hhm
-        if not self.hhm_precomputed:
+        if len(self.hhm_precomputed) == 0:
             self.hhm_file = 'temp.hhm'
             os.system('hhmake -i '+self.a3m_file+' -o '+self.hhm_file)
         else:
