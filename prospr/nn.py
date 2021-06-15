@@ -11,11 +11,9 @@ ASA_BINS = 11
 DROPOUT_RATE = 0.15 
 
 
-CUDA = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu') 
-
-def load_model(model, fname):
+def load_model(model, fname, gpu_device):
     """load pytoch state_dict into predefined model"""
-    model.load_state_dict(torch.load(fname,map_location=CUDA))
+    model.load_state_dict(torch.load(fname,map_location=gpu_device))
     return model
 
 

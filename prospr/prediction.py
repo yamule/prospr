@@ -3,7 +3,7 @@ import numpy as np
 import random
 
 from prospr.dataloader import dataloader
-from prospr.nn import CUDA, CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
+from prospr.nn import CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
 
 IDEAL_BATCH_SIZE = 2 
 
@@ -41,7 +41,9 @@ def get_masks(shape=(64,64,64), real=True):
     return mask, mask[:,shape[1]//2,:], mask[:,:,shape[2]//2] 
 
 
-def predict_domain(data, model, num_offsets=10, real_mask=True):
+def predict_domain(data, model, num_offsets=10, real_mask=True,gpu_device=None):
+    if gpu_device == None:
+        gpu_device = torch.device('cpu')
     '''make prediction for entire protein domain via crop assembly and averaging'''
     seq = data.seq
     seq_len = len(seq)
@@ -86,7 +88,7 @@ def predict_domain(data, model, num_offsets=10, real_mask=True):
     while len(crop_list) > 0:
         if len(crop_list) < IDEAL_BATCH_SIZE:
             BATCH_SIZE = len(crop_list)
-        input_vector = torch.zeros([BATCH_SIZE,INPUT_DIM,CROP_SIZE,CROP_SIZE], dtype=torch.float, device=CUDA)
+        input_vector = torch.zeros([BATCH_SIZE,INPUT_DIM,CROP_SIZE,CROP_SIZE], dtype=torch.float, device=gpu_device)
         batch_crops = []
         for batch in range(BATCH_SIZE):
             crop = crop_list.pop(0)

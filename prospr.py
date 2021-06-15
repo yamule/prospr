@@ -6,7 +6,7 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 from prospr.sequence import Sequence
-from prospr.nn import ProsprNetwork, load_model, CUDA
+from prospr.nn import ProsprNetwork, load_model
 from prospr.prediction import predict_domain
 from prospr.io import save
 
@@ -17,10 +17,15 @@ These can be created using a local install of HHBlits or using the online server
 parser = argparse.ArgumentParser(description=desc_usg, usage=argparse.SUPPRESS, formatter_class=RawTextHelpFormatter)
 parser.add_argument('a3m', help='Multiple sequence alignment file in a3m format')
 parser.add_argument('-n', '--network', help='ProSPr network(s) used to make prediction: all (default), a, b, or c', default='all')
+parser.add_argument('-hh','--hhm', help='Pre-computed hhm file made by hhblits or hhmake.')
 parser.add_argument('-o', '--output', help='Output save path for prediction pkl. Default uses same location and ID as input a3m', default='')
-
+parser.add_argument('-g', '--gpu', help='GPU device name', default='auto')
 
 def main(args):
+    if args.gpu == 'auto':
+        gpu_device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu') 
+    else:
+        gpu_device = torch.device(args.gpu) 
 
     model_paths = []
     if args.network == 'all':
@@ -30,8 +35,10 @@ def main(args):
     else:
         print('Invalid network selection!')
         return 
-
-    seq = Sequence(args.a3m)
+    if args.hhm:
+        seq = Sequence(args.a3m,hhm=args.hhm)
+    else:
+        seq = Sequence(args.a3m)
 
     if args.output == '':
         save_path = './'+seq.name+'_prediction.pkl'
@@ -55,11 +62,11 @@ def main(args):
     print('Loading ProSPr model(s)...')
     for path in model_paths:
         prospr = ProsprNetwork()
-        load_model(prospr, path)
-        prospr.to(CUDA)
+        load_model(prospr, path,gpu_device)
+        prospr.to(gpu_device)
         print('Model location:',next(prospr.parameters()).device)
         print('Making predictions...')
-        pred = predict_domain(data=seq, model=prospr)
+        pred = predict_domain(data=seq, model=prospr,gpu_device=gpu_device)
         prospr = None
 
         if total_pred == []:

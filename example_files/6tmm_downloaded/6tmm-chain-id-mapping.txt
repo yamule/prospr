@@ -1,0 +1,7 @@
+    New chain ID            Original chain ID
+
+6tmm-pdb-bundle1.pdb:
+           A                       AAA
+           B                       BBB
+           C                       CCC
+           D                       DDD
