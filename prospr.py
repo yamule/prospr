@@ -19,7 +19,7 @@ parser.add_argument('a3m', help='Multiple sequence alignment file in a3m format'
 parser.add_argument('-n', '--network', help='ProSPr network(s) used to make prediction: all (default), a, b, or c', default='all')
 parser.add_argument('-hh','--hhm', help='Pre-computed hhm file made by hhblits or hhmake.')
 parser.add_argument('-o', '--output', help='Output save path for prediction pkl. Default uses same location and ID as input a3m', default='')
-parser.add_argument('-g', '--gpu', help='GPU device name', default='auto')
+parser.add_argument('-g', '--gpu', help='GPU device name (give \'cpu\' to use CPU).', default='auto')
 
 def main(args):
     if args.gpu == 'auto':

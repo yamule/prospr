@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[28]:
 
 
 import pickle;
@@ -9,14 +9,16 @@ import matplotlib.pyplot as plt;
 import numpy as np;
 
 
-# In[4]:
+# In[29]:
 
 
-
+# Ran
+# python prospr.py example_files\T1034_default.a3m_5.a3m --hhm example_files\T1034_default.a3m_5.hhm -o example_files\testout.pkl --gpu cpu
+# at the parent dir.
 pp = pickle.load(open("testout.pkl","rb"));
 
 
-# In[11]:
+# In[30]:
 
 
 #print(pp.keys())
@@ -24,7 +26,7 @@ pp = pickle.load(open("testout.pkl","rb"));
 #print(pp["dist_bin_map"]);
 
 
-# In[13]:
+# In[31]:
 
 
 import numpy as np
@@ -141,12 +143,17 @@ class PDBData:
             chain_ca_atoms.append(cas);
         return chain_ca_atoms;
     
+    def get_ca_atoms(self):
+        return self.get_xx_atoms("CA");
     def get_cb_atoms(self):
-        chain_cb_atoms=[];
+        return self.get_xx_atoms("CB");
+
+    def get_xx_atoms(self,target):
+        chain_xx_atoms=[];
         printed={};
         printed_res = {};
         for cc in self.chains:
-            cbs = [];
+            xxs = [];
             printed_res = {};
             for aa in cc.atoms:
                 alabel = aa.get_atom_label();
@@ -154,14 +161,14 @@ class PDBData:
                     continue;
                 printed[alabel] = 100;
                 printed_res[aa.get_residue_label()] = 100;
-                if aa.atom_name == "CB":
-                    cbs.append(aa);
-                elif aa.residue_name == "GLY" and aa.atom_name == "CA":
-                    cbs.append(aa);
-            if len(cbs) != len(printed_res):
-                print("Some residues in "+cc.name+ " do not have CB!");
-            chain_cb_atoms.append(cbs);
-        return chain_cb_atoms;
+                if aa.atom_name == target:
+                    xxs.append(aa);
+                elif target == "CB" and aa.residue_name == "GLY" and aa.atom_name == "CA":
+                    xxs.append(aa);
+            if len(xxs) != len(printed_res):
+                print("Some residues in "+cc.name+ " do not have {}!".format(target));
+            chain_xx_atoms.append(xxs);
+        return chain_xx_atoms;
     
     @staticmethod
     def load(infilename):
@@ -324,7 +331,7 @@ class PDBAtom:
 
 
 
-# In[14]:
+# In[32]:
 
 
 cbs = PDBData.load("6tmm_downloaded/6tmm-pdb-bundle1.pdb").get_cb_atoms()[0];
@@ -354,16 +361,11 @@ plt.xlabel('Residue i')
 plt.ylabel('Residue j')
 
 
-# In[18]:
+# In[33]:
 
 
-plt.imshow(np.sum(pp["dist"][0:4,:,:],axis=0) > 0.5);
+#plt.imshow(np.sum(pp["dist"][0:3,:,:],axis=0) >= 0.5);
+plt.imshow(np.argmax(pp["dist"][:,:,:],axis=0) < 3);
 plt.xlabel('Residue i')
 plt.ylabel('Residue j')
-
-
-# In[ ]:
-
-
-
 
