@@ -40,7 +40,7 @@ import os;
 #result visualization script
 # prediction_visualization.ipynb by dellacortelab
 # modified by yamule
-# LGPLv3
+# MIT License
 
 def load_dist(fileName): 
     fileObject2 = open(fileName, 'rb') 
