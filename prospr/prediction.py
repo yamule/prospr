@@ -1,10 +1,15 @@
+from Bio import SeqIO
+import os
 import torch
 import numpy as np
 import random
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
-from prospr.dataloader import dataloader
-from prospr.nn import CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
-
+from prospr.sequence import Sequence
+from prospr.io import save
+from prospr.dataloader import get_tensors
+from prospr.nn import ProsprNetwork, load_model, CUDA, CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
 
 IDEAL_BATCH_SIZE = 2 
 
@@ -45,12 +50,11 @@ def get_masks(shape=(64,64,64), real=True):
         mask = np.ones(shape)
     return mask, mask[:,shape[1]//2,:], mask[:,:,shape[2]//2] 
 
-
-def predict_domain(data, model, num_offsets=10, real_mask=True,gpu_device=None):
+def predict_domain(sequence, model, num_offsets=10, real_mask=True,gpu_device=None):
     if gpu_device == None:
         gpu_device = torch.device('cpu')
     '''make prediction for entire protein domain via crop assembly and averaging'''
-    seq = data.seq
+    seq = sequence.seq
     seq_len = len(seq)
 
     # randomly select i,j pairs for grid offsets
@@ -97,10 +101,11 @@ def predict_domain(data, model, num_offsets=10, real_mask=True,gpu_device=None):
         batch_crops = []
         for batch in range(BATCH_SIZE):
             crop = crop_list.pop(0)
-            input_vector[batch,:] = dataloader(data, i=crop[0], j=crop[1]) 
+            input_vector[batch,:] = get_tensors(sequence, i=crop[0], j=crop[1]) 
             batch_crops.append(crop)
 
-        pred_dist, pred_aux_i, pred_aux_j = model(input_vector)
+        with torch.no_grad():
+            pred_dist, pred_aux_i, pred_aux_j = model(input_vector)
 
         batch_ss_i = pred_aux_i['ss'].cpu().detach().numpy()
         batch_ss_j = pred_aux_j['ss'].cpu().detach().numpy()
@@ -218,3 +223,89 @@ def predict_domain(data, model, num_offsets=10, real_mask=True,gpu_device=None):
     asa_avg = asa_sum / asa_ct
 
     return {'dist':dist_avg, 'ss':ss_avg, 'phi':phi_avg, 'psi':psi_avg, 'asa':asa_avg}
+
+def predict(args):
+    """Predict the features for the provided file (.a3m or .pdb)"""
+    if args.device:
+        if args.device == "-1":
+            gpu_device = torch.device('cpu') 
+        else:
+            gpu_device = torch.device('cuda:'+args.device) 
+    else:
+        gpu_device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu') 
+
+    model_paths = []
+    if args.network == 'all':
+        model_paths = ['./nn/prospr0421_'+x+'.pt' for x in ['a','b','c']]
+    elif args.network in ['a', 'b', 'c']:
+        model_paths.append('./nn/prospr0421_'+args.network+'.pt')
+    else:
+        print('Invalid network selection!')
+        return 
+
+    # TODO: Accept fasta input, get a3m from hhblits
+    # if not args.a3m:
+        # # Write a fasta file with the sequence
+        # with open(args.pdbfile) as handle:
+        #     sequence = next(SeqIO.parse(handle, "pdb-atom"))
+        # with open("example.fasta", "w") as output_handle:
+        #     SeqIO.write(sequence, output_handle, "fasta")
+        # # Get a3m from hhblits
+        # cmd = 'hhblits -i example.fasta -oa3m example.a3m'
+        # process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
+        # output, error = process.communicate()
+        # args.a3m = 'example.a3m'
+        
+    if args.hhm:
+        seq = Sequence(args.a3m,hhm=args.hhm)
+    else:
+        seq = Sequence(args.a3m)
+
+    save_path = os.path.join(args.output_dir, seq.name+'_prediction.pkl')
+
+    print('Buildling input vector...')
+    seq.build()
+    try:
+        seq.seq
+        seq.hhm
+        seq.dca
+    except:
+        print('ERROR! unable to properly build input vector. Please check that input is in a3m format')
+        
+    total_pred = []
+    ctr = 0
+
+    print('Loading ProSPr model(s)...')
+    for path in model_paths:
+        prospr = ProsprNetwork()
+        load_model(prospr, path)
+        prospr.to(CUDA)
+        print('Model location:',next(prospr.parameters()).device)
+        print('Making predictions...')
+        pred = predict_domain(sequence=seq, model=prospr,gpu_device=gpu_device)
+        prospr = None
+
+        if total_pred == []:
+            total_pred = pred 
+        else:
+            for key,val in pred.items():
+                total_pred[key] += val
+        ctr +=1
+    
+    print('Saving results...')
+    avg_pred = dict()
+    avg_pred['domain'] = seq.name
+    avg_pred['seq'] = seq.seq
+    for key,val in total_pred.items():
+        avg = val/ctr
+        avg_pred[key] = torch.nn.functional.softmax(torch.tensor(avg), dim=0).numpy()
+    nets = [p.split('nn/')[-1] for p in model_paths]
+    avg_pred['network'] = ', '.join(nets)
+    avg_pred['description'] = avg_pred['domain'] + ' predictions made with ' + avg_pred['network'] + ' using default settings: WEIGHTED crop assembly of 10 grids, reported as PROBABILITIES'
+    avg_pred['dist_bin_map'] = [0, 4.001, 6.001, 8.001, 10.001, 12.001, 14.001, 16.001, 18.001, 20.001]
+    
+    if args.save:
+        save(avg_pred, save_path)
+        print('Done! Successfully saved at ', save_path)
+        
+    return avg_pred
