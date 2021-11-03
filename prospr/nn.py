@@ -10,6 +10,8 @@ ANGLE_BINS = 37
 ASA_BINS = 11
 DROPOUT_RATE = 0.15 
 
+#Set device explicitly.
+#CUDA = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu') 
 
 def load_model(model, fname, gpu_device):
     """load pytoch state_dict into predefined model"""

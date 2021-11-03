@@ -9,7 +9,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 from prospr.sequence import Sequence
 from prospr.io import save
 from prospr.dataloader import get_tensors
-from prospr.nn import ProsprNetwork, load_model, CUDA, CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
+from prospr.nn import ProsprNetwork, load_model, CROP_SIZE, DIST_BINS, ANGLE_BINS, SS_BINS, ASA_BINS, INPUT_DIM
 
 IDEAL_BATCH_SIZE = 2 
 
@@ -226,13 +226,15 @@ def predict_domain(sequence, model, num_offsets=10, real_mask=True,gpu_device=No
 
 def predict(args):
     """Predict the features for the provided file (.a3m or .pdb)"""
-    if args.device:
-        if args.device == "-1":
-            gpu_device = torch.device('cpu') 
-        else:
-            gpu_device = torch.device('cuda:'+args.device) 
+    print(args.device);
+    print(type(args.device));
+    print(type("A"));
+    print(type(-1));
+    if str(args.device) == str(-1):
+        gpu_device = torch.device('cpu') 
     else:
-        gpu_device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu') 
+        gpu_device = torch.device('cuda:'+str(args.device))
+
 
     model_paths = []
     if args.network == 'all':
@@ -278,8 +280,8 @@ def predict(args):
     print('Loading ProSPr model(s)...')
     for path in model_paths:
         prospr = ProsprNetwork()
-        load_model(prospr, path)
-        prospr.to(CUDA)
+        load_model(prospr, path, gpu_device)
+        prospr.to(gpu_device)
         print('Model location:',next(prospr.parameters()).device)
         print('Making predictions...')
         pred = predict_domain(sequence=seq, model=prospr,gpu_device=gpu_device)
