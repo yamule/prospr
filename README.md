@@ -21,6 +21,14 @@ After downloading the code, a conda environment with all required dependencies c
 ```
 conda env create -f dependencies/prospr-env.yml
 ```   
+
+```
+pip install numba
+# OR
+conda install numba
+```
+(I used cherry picking installation of dependencies with conda and used pip when module not found error occured. (yamule))
+
 Once activated
 ```
 # Make a prediction:
