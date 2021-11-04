@@ -50,4 +50,8 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
     args = parser.parse_args()
+    if args.output_dir:
+        if not os.path.exists(args.output_dir):
+            os.mkdir(args.output_dir);
+        args.save = True;
     args.func(args)

@@ -226,10 +226,6 @@ def predict_domain(sequence, model, num_offsets=10, real_mask=True,gpu_device=No
 
 def predict(args):
     """Predict the features for the provided file (.a3m or .pdb)"""
-    print(args.device);
-    print(type(args.device));
-    print(type("A"));
-    print(type(-1));
     if str(args.device) == str(-1):
         gpu_device = torch.device('cpu') 
     else:

@@ -26,6 +26,9 @@ Once activated
 # Make a prediction:
 python3 prospr.py predict --a3m ./data/evaluate/T1034.a3m
 
+# Use precomputed hhm (Mostly for Windows, because hhsuite is not available with conda.)
+python prospr.py  predict --a3m example_files\T1034_default.a3m_5.a3m --hhm example_files\T1034_default.a3m_5.hhm -o example_files\result
+
 # Or train a new network
 python3 prospr.py train
 

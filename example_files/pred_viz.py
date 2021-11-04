@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[40]:
+# In[2]:
 
 
 import pickle;
@@ -9,16 +9,16 @@ import matplotlib.pyplot as plt;
 import numpy as np;
 
 
-# In[41]:
+# In[3]:
 
 
-# Ran
-# python prospr.py example_files\T1034_default.a3m_5.a3m --hhm example_files\T1034_default.a3m_5.hhm -o example_files\testout.pkl --gpu cpu
+# Run
+# python prospr.py  predict --a3m example_files\T1034_default.a3m_5.a3m --hhm example_files\T1034_default.a3m_5.hhm -o example_files\result
 # at the parent dir.
-pp = pickle.load(open("testout.pkl","rb"));
+pp = pickle.load(open("result\T1034_default_prediction.pkl","rb"));
 
 
-# In[42]:
+# In[5]:
 
 
 #print(pp.keys())
@@ -26,7 +26,7 @@ pp = pickle.load(open("testout.pkl","rb"));
 #print(pp["dist_bin_map"]);
 
 
-# In[43]:
+# In[6]:
 
 
 import numpy as np
@@ -331,7 +331,7 @@ class PDBAtom:
 
 
 
-# In[44]:
+# In[9]:
 
 
 cbs = PDBData.load("6tmm_downloaded/6tmm-pdb-bundle1.pdb").get_cb_atoms()[0];
@@ -355,15 +355,16 @@ for aa in range(blen):
 
 # In[8]:
 
-
+print("Ground Truth:")
 plt.imshow(distt)
 plt.xlabel('Residue i')
 plt.ylabel('Residue j')
 
 
-# In[45]:
+# In[10]:
 
 
+print("Prediction:");
 #plt.imshow(np.sum(pp["dist"][0:3,:,:],axis=0) >= 0.5);
 plt.imshow(np.argmax(pp["dist"][:,:,:],axis=0) < 3);
 plt.xlabel('Residue i')

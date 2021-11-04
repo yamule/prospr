@@ -1,3 +1,4 @@
 __pycache__/
 nn/
 example_files/.ipynb_checkpoints/
+example_files/result*
