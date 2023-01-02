@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 import pickle;
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt;
 import numpy as np;
 
 
-# In[3]:
+# In[2]:
 
 
 # Run
@@ -18,7 +18,7 @@ import numpy as np;
 pp = pickle.load(open("result\T1034_default_prediction.pkl","rb"));
 
 
-# In[5]:
+# In[3]:
 
 
 #print(pp.keys())
@@ -26,13 +26,12 @@ pp = pickle.load(open("result\T1034_default_prediction.pkl","rb"));
 #print(pp["dist_bin_map"]);
 
 
-# In[6]:
+# In[4]:
 
 
 import numpy as np
 import matplotlib.pyplot as plt
-import pickle as pkl  
-import pandas as pd
+import pickle as pkl
 import re;
 import sys;
 import os;
@@ -248,10 +247,7 @@ class PDBChain:
         aalist = self.list_residues();
         ret = [];
         for aa in aalist:
-            if aa in aa_3_1:
-                ret.append(aa_3_1[aa]);
-            else:
-                ret.append("X");
+            ret.append(aa_3_1(aa));
         return "".join(ret);
     
     def get_atom_lines(self):
@@ -331,7 +327,7 @@ class PDBAtom:
 
 
 
-# In[9]:
+# In[5]:
 
 
 cbs = PDBData.load("6tmm_downloaded/6tmm-pdb-bundle1.pdb").get_cb_atoms()[0];
@@ -361,7 +357,7 @@ plt.xlabel('Residue i')
 plt.ylabel('Residue j')
 
 
-# In[10]:
+# In[6]:
 
 
 print("Prediction:");
