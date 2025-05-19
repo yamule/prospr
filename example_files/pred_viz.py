@@ -275,7 +275,7 @@ class PDBAtom:
         self.occupancy = line[54:60];
         self.bfactor = line[60:66];
         self.element = line[76:78];
-        self.charge = line[79:80];
+        self.charge = line[78:80];
     
     #alt pos 以外を入れる
     def get_atom_label(self):
